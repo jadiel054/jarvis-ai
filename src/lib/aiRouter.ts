@@ -13,7 +13,7 @@ export interface AIMessage {
 const MODELS = [
   {
     id: 'claude',
-    name: 'Claude Sonnet',
+    name: 'Claude Haiku',
     call: async (messages: AIMessage[], systemPrompt: string, keys: AIKeys) => {
       if (!keys.claude) throw new Error('no key');
       const r = await fetch('https://api.anthropic.com/v1/messages', {
@@ -24,7 +24,7 @@ const MODELS = [
           'anthropic-version': '2023-06-01',
         },
         body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
+          model: 'claude-haiku-4-5-20251001',
           max_tokens: 1500,
           system: systemPrompt,
           messages: messages.slice(-20),
@@ -47,7 +47,7 @@ const MODELS = [
           Authorization: `Bearer ${keys.groq}`,
         },
         body: JSON.stringify({
-          model: 'llama-3.3-70b-versatile',
+          model: 'llama3-70b-8192',
           max_tokens: 1500,
           messages: [{ role: 'system', content: systemPrompt }, ...messages.slice(-20)],
         }),
@@ -126,7 +126,6 @@ export const callAI = async (
   return 'Nenhum modelo disponível. Configure as chaves em Integrações.';
 };
 
-// Test individual key validity
 export const testKey = async (keyType: string, keyValue: string): Promise<boolean> => {
   if (!keyValue.trim()) return false;
   try {
@@ -139,8 +138,8 @@ export const testKey = async (keyType: string, keyValue: string): Promise<boolea
           'anthropic-version': '2023-06-01',
         },
         body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 5,
+          model: 'claude-haiku-4-5-20251001',
+          max_tokens: 10,
           messages: [{ role: 'user', content: 'hi' }],
         }),
       });
